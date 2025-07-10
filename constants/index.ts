@@ -1,4 +1,5 @@
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
+import { VapiClient } from "@vapi-ai/server-sdk";
 import { z } from "zod";
 
 export const mappings = {
@@ -202,6 +203,24 @@ export const interviewCovers = [
   "/tiktok.png",
   "/yahoo.png",
 ];
+
+export async function getWorkflowById(workflowId: string) {
+  const client = new VapiClient({
+    token: process.env.NEXT_PUBLIC_VAPI_PRIVATE_KEY!,
+  });
+
+  try {
+    // Fetch the workflow
+    const workflow = await client.workflow.workflowControllerFindOne(
+      workflowId
+    );
+    console.log("Workflow data:", workflow);
+    return workflow;
+  } catch (err) {
+    console.error("Error fetching workflow", err);
+    throw err;
+  }
+}
 
 export const dummyInterviews: Interview[] = [
   {
